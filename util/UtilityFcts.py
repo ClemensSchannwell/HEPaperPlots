@@ -250,9 +250,9 @@ def CreateTSInputAnom(VarName,Region):
     if VarName == "bheatflx":
         Anomaly=["Geo+ (+42 mW m$^{-2}$)","Ctrl","Geo- (-42 mW m$^{-2}$)"]
         if Region == "Hudson":
-            Runs=["HE06","HE05","HE13"]
+            Runs=["HE06","HE02","HE13"]
         elif Region == "Kenzie":
-            Runs=["HE17","HE05","HE07"]
+            Runs=["HE17","HE02","HE07"]
     elif VarName == "climatic_mass_balance":
         Anomaly=["Smb+ (+100 kg m$^{-2}$yr$^{-1}$)", "Ctrl","Smb- (-100 kg m$^{-2}$yr$^{-1}$)"] 
         if Region == "Hudson":
@@ -670,7 +670,7 @@ def PlotPISMTimeSeries(arg,var,ax,shift=0,subset=None):
             Time = NCFile.variables['time'][:]/(365.0*86400*1000)
             if counter == 0:
                 Time = Time - Time[0] - shift
-                counter=counter+1
+                # counter=counter+1
             else:
                 Time = Time - Time[0]
             if subset:
