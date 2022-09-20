@@ -16,8 +16,8 @@ def Main():
     LabelFS=20
     AxisFSize=18
     TitleFSize=27
-    XLim=[0,57.6]
-    YLim=[0,7e8]
+    XLim=[0,85.0]
+    YLim=[0,9e12]
     PanelLabel=[["(a)","(b)"],["(c)","(d)"],["(e)","(f)"], ["(g)","(h)"]]
     LabelPos = [0.04, 0.92]
     LabPosX = [0.105, 0.175, 0.15, 0.15]
@@ -28,13 +28,17 @@ def Main():
     for i in range(len(Vars)):
         PlotFiles=CreateTSInputAnom(Vars[i],"Hudson")
         # if i <= 1:
+        print(PlotFiles)
         PlotPISMTimeSeries(PlotFiles,"flux_crossSection",ax[i][0])
-        ax[i][0].set_ylabel("Ice flux [m$^2$/yr]",fontsize=AxisFSize)
+        ax[i][0].set_ylabel("Ice flux [m$^3$/yr]",fontsize=AxisFSize)
         ax[i][0].set_xlim(XLim)
         ax[i][0].set_ylim(YLim)
         ax[i][0].text(LabPosX[i], 0.92, PlotLabels[i],color="black",
             horizontalalignment='center', verticalalignment='center',
             transform=ax[i][0].transAxes,fontsize=LabelFS)
+        ax[i][0].fill_between([20,88],[-100,-100],[9e12,9e12],
+                color="grey", hatch = '//', label='Analysis Period',
+                facecolor = 'none',alpha=0.6)
         ax[i][0].tick_params(axis='both',labelsize=YTickLabelSize)
         ax[i][0].text(LabelPos[0],LabelPos[1], PanelLabel[i][0],color="black",
         horizontalalignment='center', verticalalignment='center',
@@ -42,6 +46,9 @@ def Main():
         PlotFiles=CreateTSInputAnom(Vars[i],"Kenzie")
         # if i <= 1:
         PlotPISMTimeSeries(PlotFiles,"flux_crossSection",ax[i][1])
+        ax[i][1].fill_between([20,88],[-100,-100],[9e12,9e12],
+                color="grey", hatch = '//',
+                facecolor = 'none',alpha=0.6)
         ax[i][1].legend(loc=1,prop={'size':LegendFSize})
         ax[i][1].set_xlim(XLim)
         ax[i][1].set_ylim(YLim)
@@ -65,6 +72,7 @@ def Main():
             ax[i][1].set_xlabel("Time [kyrs]",fontsize=AxisFSize)
 
     plt.tight_layout()
+    # plt.show()
     SavePlot("Fig07","TSSurges_Anomaly")
 
 if __name__ == '__main__':
