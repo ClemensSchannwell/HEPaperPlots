@@ -96,10 +96,11 @@ def ComputeFlowLine(Region):
 
 def ComputeGradient(File):
     NCFile=Dataset(File)
-    Distance=NCFile.variables['y'][:]
+    Distance=NCFile.variables['y'][:]*1000
     Usurf=NCFile.variables['usurf'][:]
     Usurf[Usurf==0]=np.nan
     GradMat=np.zeros((231,len(Usurf[0,:])))
+    print(Distance)
     for i in range(len(Usurf[0,:])):
         GradMat[:,i]=np.gradient(Usurf[:,i],Distance)
     return GradMat
