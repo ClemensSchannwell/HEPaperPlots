@@ -65,7 +65,7 @@ def ComputeWeightedMean(WinCenter,HalfWidthInInds,MeanVar,Out,OutFinal,\
     return Out,OutFinal
 
 def ComputeWinPar(WindowWidth,dt):
-    WidthInInds=(WindowWidth/dt)*2
+    WidthInInds=int(WindowWidth/dt)*2
     WinCenter=int(WindowWidth/dt)
     HalfWidthInInds=int(WidthInInds/2)
     WindowInds=np.linspace(-HalfWidthInInds,HalfWidthInInds,WidthInInds+1)
