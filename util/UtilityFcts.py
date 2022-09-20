@@ -475,15 +475,16 @@ def MakeFigSurgeBehaviourComb(InputFile,Snapshots,Region,fig,ax3, GL=True):
     else:
         counter=0
     ISName= Region + " ice stream"
-    UPanelLabel=["(a)","(d)","(g)","(j)","(m)","(p)"]
-    MPanelLabel=["(b)","(e)","(h)","(k)", "(n)","(q)"]
-    LPanelLabel=["(c)","(f)","(i)","(l)", "(o)", "(r)"]
+    UPanelLabel=["(a)","(c)","(e)","(j)","(m)","(p)"]
+    MPanelLabel=["(b)","(d)","(f)","(k)", "(n)","(q)"]
     LabelPos = [0.03, 1.09]
     # GL=True
     DummyY=np.array([-1e9,1e9])
     [Thk,GradThk,Zs,GradZs,Bed,Zb,TempBottom,VelBase,TillW,Bmelt,Dbdt
             ,Time,TauD,TauB,Distance]= ReadAllVars(InputFile)
-    TitleStr=["Quiescent phase", "Pre-surge phase", "Surge phase"]
+    TitleStr=["Quiescent phase (" + str((Snapshots[0]-200)/10) + " kyrs)",
+            "Pre-surge phase (" + str((Snapshots[1]-200)/10) + " kyrs)", 
+            "Surge phase( "+ str((Snapshots[2]-200)/10) + " kyrs)" ]
     for iSlice in range(counter,len(Snapshots)+counter):
         it = Snapshots[iSlice-counter]
         OceanStartInd=np.argmax(Zb[:,it]-Bed[:,it]>2)-1
@@ -504,10 +505,20 @@ def MakeFigSurgeBehaviourComb(InputFile,Snapshots,Region,fig,ax3, GL=True):
         ax3[iSlice][0].tick_params(axis='y',labelsize=YTickLabelSize)
         # # Second subplot
         ax2=ax3[iSlice][1].twinx()
+        ax21=ax3[iSlice][1].twinx()
+        # Set position of secondary y-axis
+        ax21.spines['right'].set_position(('outward', 60))
         ax3[iSlice][1].plot(Distance,np.zeros(len(Distance)), color='grey',linestyle='dotted')
         ax3[iSlice][1].plot(Distance,TempBottom[:,it], color='black',linewidth=LW)
         p1, =ax2.plot(Distance,VelBase[:,it], color='blue',linewidth=LW)
         ax2.set_yscale('log')
+
+        p2, =ax21.plot(Distance,TillW[:,it], color='purple',linewidth=LW)
+        SetColourOfSecondYAxis(ax21,p2.get_color())
+        ax21.set_ylim([0,2.05])
+        ax21.set_ylabel("Till water [m]",fontsize=YLabelSize)
+        ax21.tick_params(axis='y',labelsize=YTickLabelSize)
+
         ax3[iSlice][1].set_xlim([0,2450])
         ax3[iSlice][1].set_ylim([-6,0.5])
         ax2.set_ylim([1,65000])
@@ -519,38 +530,17 @@ def MakeFigSurgeBehaviourComb(InputFile,Snapshots,Region,fig,ax3, GL=True):
         ax3[iSlice][1].tick_params(axis='y',labelsize=YTickLabelSize)
         ax2.set_ylabel("Ice Speed [m/yr]",fontsize=YLabelSize)
         ax2.tick_params(axis='y',labelsize=YTickLabelSize)
-        # # Third subplot
-        ax21=ax3[iSlice][2].twinx()
-        ax3[iSlice][2].plot(Distance,TillW[:,it], color='black',linewidth=LW)
-        ax21.fill_between(Distance,np.zeros(len(Distance)),TauD[:,it]-TauB[:,it],color='purple',alpha=0.35)
-        p2,=ax21.plot(Distance,-500*np.ones(len(Distance)), color='purple',linewidth=LW)
-        ax3[iSlice][2].set_xlim([0,2450])
-        ax3[iSlice][2].set_ylim([0,2.15])
-        ax21.set_yscale('log')
-        ax21.set_ylim([1,1e5])
-        SetColourOfSecondYAxis(ax21,p2.get_color())
-        ax3[iSlice][2].text(LabelPos[0],LabelPos[1], LPanelLabel[iSlice],color="black",
-        horizontalalignment='center', verticalalignment='center',
-        transform=ax3[iSlice][2].transAxes,fontsize=YLabelSize)
-        ax3[iSlice][2].set_ylabel("Till water [m]",fontsize=YLabelSize)
-        ax3[iSlice][2].tick_params(axis='y',labelsize=YTickLabelSize)
-        ax21.set_ylabel("$\Delta$Stress [Pa]",fontsize=YLabelSize)
-        ax21.tick_params(axis='y',labelsize=YTickLabelSize)
-        if iSlice == 5:
+        if iSlice == 2:
             ax3[iSlice][0].set_xlabel("Distance [km]",fontsize=YLabelSize)
             ax3[iSlice][0].tick_params(axis='x',labelsize=YTickLabelSize)
             ax3[iSlice][1].set_xlabel("Distance [km]",fontsize=YLabelSize)
             ax3[iSlice][1].tick_params(axis='x',labelsize=YTickLabelSize)
-            ax3[iSlice][2].set_xlabel("Distance [km]",fontsize=YLabelSize)
-            ax3[iSlice][2].tick_params(axis='x',labelsize=YTickLabelSize)
         else:
             ax3[iSlice][0].set_xticklabels([])
             ax3[iSlice][1].set_xticklabels([])
-            ax3[iSlice][2].set_xticklabels([])
         if GL:
             ax3[iSlice][0].plot([Distance[OceanStartInd-1],Distance[OceanStartInd-1]],DummyY,color="red",linewidth=LW)
             ax3[iSlice][1].plot([Distance[OceanStartInd-1],Distance[OceanStartInd-1]],DummyY,color="red",linewidth=LW)
-            ax3[iSlice][2].plot([Distance[OceanStartInd-1],Distance[OceanStartInd-1]],DummyY,color="red",linewidth=LW)
 
     plt.tight_layout()
     return fig
