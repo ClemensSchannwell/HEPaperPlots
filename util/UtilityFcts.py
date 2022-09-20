@@ -58,7 +58,7 @@ def AddText(arg,ax):
             ax.text(f[1],f[2],f[0],ha='center', rotation=float(f[4]),fontweight=f[5],color=f[6],\
                 va='center',transform=ax.transAxes,fontsize=int(f[3]),bbox=props)
         else:
-            ax.text(f[1],f[2],f[0],ha='center', rotation=float(f[4]), \
+            ax.text(float(f[1]),float(f[2]),f[0],ha='center', rotation=float(f[4]), \
                 va='center',transform=ax.transAxes,fontsize=int(f[3]),fontweight=f[5],color=f[6])
 
 def ComputeDeltaIVol(Ind, Region, Runs):
