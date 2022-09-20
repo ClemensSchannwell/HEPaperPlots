@@ -37,7 +37,7 @@ def Main():
     GradMat[np.isnan(GradMat)]=0 
     # left panel here
     cmapD = plt.cm.get_cmap('seismic', 15)
-    im=ax[0].imshow(np.rot90(GradMat[:,Start:End]),vmin=-0.1,vmax=0.1,cmap=cmapD,aspect='auto',extent=[0,2500,0,900])
+    im=ax[0].imshow(np.rot90(GradMat[:,Start:End]),vmin=-6e-3,vmax=6e-3,cmap=cmapD,aspect='auto',extent=[0,2500,0,900])
     t = ax[0].text(
                 1100, 145, "Activation wave", ha="center", va="center", rotation=-10, size=25,
                     bbox=dict(boxstyle="larrow,pad=0.6", fc="red", ec="k", lw=2))
@@ -45,7 +45,7 @@ def Main():
     ax[0].set_xlabel("Distance [km]",fontsize=AxisFSize)
     ax[0].set_ylabel("Time [yrs]",fontsize=AxisFSize)
     cbar = fig.colorbar(im, fraction=0.066, pad=0.04, ax=ax[0])
-    cbar.set_label('surface gradient [m$^{-1}$]',fontsize=22)
+    cbar.set_label('surface gradient [-]',fontsize=22)
     cbar.ax.tick_params(labelsize=20)
     ax[0].set_title("Ice surface gradient evolution",fontweight="bold",fontsize=TitleFSize)
     ax[0].text(0.15, 0.03, "upstream",color="red", horizontalalignment='center', verticalalignment='center',
@@ -80,6 +80,7 @@ def Main():
         horizontalalignment='center', verticalalignment='center',
         transform=ax[1].transAxes,fontsize=AxisFSize)
     plt.tight_layout()
+    plt.show()
     SavePlot("Fig05","ActivationWaveHudson")
 
 if __name__ == '__main__':
