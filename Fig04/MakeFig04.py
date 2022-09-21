@@ -17,7 +17,7 @@ def Main():
     # fig,ax3 = CreateSuplotAxesSimple(3,3,10,17)
     fig,ax3 = CreateSuplotAxesSimple(3,2,10,17)
     figOut=MakeFigSurgeBehaviourComb(InputFile,Snapshots,"Hudson",fig,ax3,True)
-    plt.show()
+    # plt.show()
     SavePlot("Fig04","SurgeBehaviour_Hudson")
 
 if __name__ == '__main__':

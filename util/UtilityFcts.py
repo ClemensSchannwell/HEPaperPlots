@@ -483,9 +483,9 @@ def MakeFigSurgeBehaviourComb(InputFile,Snapshots,Region,fig,ax3, GL=True):
     DummyY=np.array([-1e9,1e9])
     [Thk,GradThk,Zs,GradZs,Bed,Zb,TempBottom,VelBase,TillW,Bmelt,Dbdt
             ,Time,TauD,TauB,Distance]= ReadAllVars(InputFile)
-    TitleStr=["Quiescent phase (" + str((Snapshots[0]-200)/10) + " kyrs)",
-            "Pre-surge phase (" + str((Snapshots[1]-200)/10) + " kyrs)", 
-            "Surge phase( "+ str((Snapshots[2]-200)/10) + " kyrs)" ]
+    TitleStr=["Quiescent phase (" + str((Snapshots[0])/10) + " kyrs)",
+            "Pre-surge phase (" + str((Snapshots[1])/10) + " kyrs)", 
+            "Surge phase ("+ str((Snapshots[2])/10) + " kyrs)" ]
     for iSlice in range(counter,len(Snapshots)+counter):
         it = Snapshots[iSlice-counter]
         OceanStartInd=np.argmax(Zb[:,it]-Bed[:,it]>2)-1
