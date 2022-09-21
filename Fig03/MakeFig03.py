@@ -18,15 +18,14 @@ def Main():
     YTickLabelSize=24
     fig,ax = CreateSuplotAxesSimple(1,1,10,15)
     PlotFiles=CreateTSInputAnom("reference","Hudson")
-    PlotPISMTimeSeries(PlotFiles,"flux_crossSection",ax,20)
+    PlotPISMTimeSeries(PlotFiles,"flux_crossSection",ax)
     PlotFiles=CreateTSInputAnom("reference","Kenzie")
-    PlotPISMTimeSeries(PlotFiles,"flux_crossSection",ax,20)
-    # ax.fill_between([20,88],[-100,-100],[9e12,9e12],
-                # color="grey", hatch = '//', label='Analysis Period',
-                # facecolor = 'none',alpha=0.6)
+    PlotPISMTimeSeries(PlotFiles,"flux_crossSection",ax)
+    ax.fill_between([20,88],[-100,-100],[9e12,9e12],
+        color="grey", facecolor = 'grey',alpha=0.2)
     ax.set_ylabel("Ice flux [m$^3$/yr]",fontsize=AxisFSize)
     # ax.set_xlim([-65,-7.5])
-    ax.set_xlim([0,65.0])
+    ax.set_xlim([0,85.0])
     ax.set_ylim(YLim)
     ax.legend(loc=1,prop={'size':LegendFSize})
     ax.text(0.21, 0.95, "Control simulation (Ctrl)",color="black",
