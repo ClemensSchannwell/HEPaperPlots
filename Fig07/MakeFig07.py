@@ -37,8 +37,7 @@ def Main():
             horizontalalignment='center', verticalalignment='center',
             transform=ax[i][0].transAxes,fontsize=LabelFS)
         ax[i][0].fill_between([20,88],[-100,-100],[9e12,9e12],
-                color="grey", hatch = '//', label='Analysis Period',
-                facecolor = 'none',alpha=0.6)
+                color="grey", facecolor = 'grey',alpha=0.2)
         ax[i][0].tick_params(axis='both',labelsize=YTickLabelSize)
         ax[i][0].text(LabelPos[0],LabelPos[1], PanelLabel[i][0],color="black",
         horizontalalignment='center', verticalalignment='center',
@@ -47,8 +46,7 @@ def Main():
         # if i <= 1:
         PlotPISMTimeSeries(PlotFiles,"flux_crossSection",ax[i][1])
         ax[i][1].fill_between([20,88],[-100,-100],[9e12,9e12],
-                color="grey", hatch = '//',
-                facecolor = 'none',alpha=0.6)
+                color="grey", facecolor = 'grey',alpha=0.2)
         ax[i][1].legend(loc=1,prop={'size':LegendFSize})
         ax[i][1].set_xlim(XLim)
         ax[i][1].set_ylim(YLim)
