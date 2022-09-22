@@ -128,11 +128,14 @@ def ComputeSurgeTiming4IceVol(Region,Thresh,RunType="anomaly"):
     FluxAll = []
     DeltaIVolAll = []
     Runs = GetRuns(Region,RunType)
+    print(Runs)
     for iRun in range(len(Runs)):
         [Flux,Time] = ReadData(Region,Runs[iRun])
+        IndStart = int(np.where(Time == -45000)[0][0])
+        IndEnd = int(np.where(Time == 20000)[0][0])
         HEEvents=[]
         FluxHE = []
-        for i in range(5,len(Flux),21):
+        for i in range(IndStart,IndEnd,21):
             FluxWind= Flux[i:i+21]
             TimeWind = Time[i:i+21]
             if any(FluxWind > Thresh):
@@ -142,6 +145,9 @@ def ComputeSurgeTiming4IceVol(Region,Thresh,RunType="anomaly"):
         HEInds = GetIndices4HEEvent(HEEvents,Time)
         DeltaVol=ComputeDeltaIVol(HEInds,Region,Runs[iRun])
         HEFreq=np.diff(HEEvents)
+        print(Runs[iRun])
+        print(DeltaVol)
+        print(HEFreq)
         HEAll.append(HEFreq)
         DeltaIVolAll.append(DeltaVol)
     return DeltaIVolAll, HEAll
