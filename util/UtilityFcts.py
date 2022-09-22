@@ -629,11 +629,11 @@ def PlotForcingHEFreq(ForcingFreq,ax,LineW=1.0,LineSty="dotted"):
     for iRuns in range(len(ForcingFreq)):
         Fr = ForcingFreq[iRuns]/1000
         if Fr > 0:
-            X=np.arange(0+Fr/2,57.6,Fr)
+            X=np.arange(0+Fr/2,90,Fr)
             XComb=np.column_stack((X,X))
             Y=np.ones((XComb.shape))
             Y[:,0]=Y[:,0]*0
-            Y[:,1]=Y[:,1]*1e12
+            Y[:,1]=Y[:,1]*1e20
             ax.plot(XComb.T,Y.T,linewidth=LineW,color=Colours[iRuns],linestyle=LineSty)
 
 def Plot2DPISMField(argVar,argPlot,argGL,argCoast,argGLExt,argIceMask,\
