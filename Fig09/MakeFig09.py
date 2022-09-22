@@ -14,9 +14,11 @@ def Main():
     LegendFSize=20
     AxisFSize=24
     TitleFSize=27
-    XLim=[0,57.6]
+    XLim=[0,85]
+    YLimH=[3.5e15,6.0e15]
+    YLimK=[3.6e15,5.0e15]
     LabelPos = [0.03, 0.975]
-    T = np.linspace(0,58,100)
+    T = np.linspace(0,85,100)
     # YLim=[0,6e8]
     YTickLabelSize=20
     PanelLabel=[["(a)","(b)"],["(c)","(d)"],["(e)","(f)"]]
@@ -27,11 +29,15 @@ def Main():
     PlotPISMTimeSeries(PlotFiles,"thk",ax[0])
     ax[0].plot(T,np.ones(len(T))*5.07e15,color="grey", linestyle="dashed", \
         linewidth=3, label="Mean")
+    ax[0].fill_between([20,88],[-100,-100],[9e20,9e20],
+        color="grey", facecolor = 'grey',alpha=0.2)
     ax[0].set_ylabel("Ice volume [m$^3$]",fontsize=AxisFSize)
     ax[0].set_xlabel("Time [kyrs]",fontsize=AxisFSize)
     ax[0].legend(loc=1,prop={'size':LegendFSize})
     ax[0].tick_params(axis='both',labelsize=YTickLabelSize)
     ax[0].set_xlim(XLim)
+    ax[0].set_ylim(YLimH)
+
     ax[0].text(LabelPos[0],LabelPos[1], PanelLabel[0][0],color="black",
         horizontalalignment='center', verticalalignment='center',
         transform=ax[0].transAxes,fontsize=AxisFSize)
@@ -41,10 +47,13 @@ def Main():
     PlotFiles =CreateTSInputVolume("Kenzie")
     PlotPISMTimeSeries(PlotFiles,"thk",ax[1])
     ax[1].plot(T,np.ones(len(T))*4.35e15,color="grey", linestyle="dashed", linewidth=3,label="Mean")
+    ax[1].fill_between([20,88],[-100,-100],[9e20,9e20],
+        color="grey", facecolor = 'grey',alpha=0.2)
     ax[1].set_xlabel("Time [kyrs]",fontsize=AxisFSize)
     ax[1].legend(loc=1,prop={'size':LegendFSize})
     ax[1].tick_params(axis='both',labelsize=YTickLabelSize)
     ax[1].set_xlim(XLim)
+    ax[1].set_ylim(YLimK)
     ax[1].text(LabelPos[0],LabelPos[1], PanelLabel[0][1],color="black",
         horizontalalignment='center', verticalalignment='center',
         transform=ax[1].transAxes,fontsize=AxisFSize)

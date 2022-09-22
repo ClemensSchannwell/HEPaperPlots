@@ -22,14 +22,14 @@ def AddArrowsDS(ax):
 
 def AddArrowsVol(ax,region):
     if region == "Hudson": 
-        ax.annotate(s='', xy=(0.08,0.63), xytext=(0.08,0.1),
+        ax.annotate(text='', xy=(0.08,0.63), xytext=(0.08,0.04),
                 arrowprops=dict(arrowstyle='<|-|>',mutation_scale=30,color="blue",
                     lw=5),xycoords=ax.transAxes)
-        ax.text(0.15, 0.08, "$\sim$3.3 m sea level",color="blue",
+        ax.text(0.17, 0.02, "$\sim$3.8 m sea level",color="blue",
             horizontalalignment='center', verticalalignment='center',
             transform=ax.transAxes,fontsize=19)
     elif region == "Kenzie":
-        ax.annotate(s='', xy=(0.14,0.54), xytext=(0.14,0.05),
+        ax.annotate(text='', xy=(0.14,0.54), xytext=(0.14,0.05),
                 arrowprops=dict(arrowstyle='<|-|>',mutation_scale=30,color="blue",
                     lw=5),xycoords=ax.transAxes)
         ax.text(0.18, 0.03, "$\sim$1.8 m sea level",color="blue",
@@ -142,6 +142,7 @@ def ComputeSurgeTiming4IceVol(Region,Thresh,RunType="anomaly"):
                 HEEvents.append(TimeWind[np.argmax(FluxWind)])
                 FluxHE.append(np.max(FluxWind))
         [HEEvents,FluxHE] = DataCleaning(HEEvents,FluxHE)
+        print(HEEvents)
         HEInds = GetIndices4HEEvent(HEEvents,Time)
         DeltaVol=ComputeDeltaIVol(HEInds,Region,Runs[iRun])
         HEFreq=np.diff(HEEvents)
@@ -249,6 +250,43 @@ def CreateTSInputFreq(VarName,Region):
         List=["Data/"+Region+"Hov_"+Runs[i]+".nc",Colours[i],Anomaly[i],"4.0"]
         PlotFiles.append(List)
     return PlotFiles,ForcingFreq
+
+def CreateTSInputAnomExt(VarName,Region):
+    Colours=["red","purple", "black"]
+    PlotFiles=[]
+    if VarName == "bheatflx":
+        Anomaly=["Geo+ (+42 mW m$^{-2}$)", "Geo+ (+21 mW m$^{-2}$)","Ctrl"]
+        if Region == "Hudson":
+            Runs=["HE06", "HE96", "HE02"]
+        elif Region == "Kenzie":
+            Runs=["HE17","HE101", "HE02"]
+    elif VarName == "climatic_mass_balance":
+        Anomaly=["Smb+ (+100 kg m$^{-2}$yr$^{-1}$)","Smb+ (+50 kg m$^{-2}$yr$^{-1}$)", "Ctrl"] 
+        if Region == "Hudson":
+            Runs=["HE18", "HE94", "HE02"]
+        elif Region == "Kenzie":
+            Runs=["HE10", "HE99", "HE02"]
+    elif VarName == "ice_surface_temp":
+        Anomaly=["St+ (+5°C)","St+ (+2.5°C)", "Ctrl"] 
+        if Region == "Hudson":
+            Runs=["HE12","HE95", "HE02"]
+        elif Region == "Kenzie":
+            Runs=["HE22", "HE100", "HE02"]
+    elif VarName == "reference":
+        Runs=["HE02"]
+        if Region == "Hudson":
+            Anomaly=["Hudson"]
+            Colours=["red"]
+        elif Region == "Kenzie":
+            Anomaly=["Mackenzie"]
+            Colours=["black"]
+    for i in range(len(Runs)):
+        if VarName=="synchron":
+            List=["Data/"+Region[i]+"Hov_"+Runs[i]+".nc",Colours[i],Anomaly[i],"4.0"]
+        else:
+            List=["Data/"+Region+"Hov_"+Runs[i]+".nc",Colours[i],Anomaly[i],"4.0"]
+        PlotFiles.append(List)
+    return PlotFiles
 
 def CreateTSInputAnom(VarName,Region):
     Colours=["red","black","blue"]
@@ -451,6 +489,8 @@ def GetRuns(Region,RunType="anomaly"):
     if Region == "Hudson":
         if RunType == "anomaly":
             Runs = ["HE02","HE19","HE13","HE20","HE18","HE06","HE12"]
+        elif RunType == "anomalyint":
+            Runs = ["HE02","HE18","HE06","HE12", "HE94", "HE96", "HE95"]
         else:
             Runs = ["HE01", "HE02","HE08", "HE14", "HE23", "HE24" ]
     else:
@@ -752,7 +792,7 @@ def RemoveDuplicates(XYInputArray):
 
 def SavePlot(PlotNo,name,res=300):
     SaveStr=PlotNo + "_" + name + ".png"
-    plt.savefig(SaveStr,dpi=int(res))
+    plt.savefig(SaveStr,bbox_inches='tight', dpi=int(res))
 
 def SetColourOfSecondYAxis(ax,color):
     ax.yaxis.label.set_color(color)
