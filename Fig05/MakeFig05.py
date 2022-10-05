@@ -80,7 +80,7 @@ def Main():
         horizontalalignment='center', verticalalignment='center',
         transform=ax[1].transAxes,fontsize=AxisFSize)
     plt.tight_layout()
-    plt.show()
+    # plt.show()
     SavePlot("Fig05","ActivationWaveHudson")
 
 if __name__ == '__main__':
