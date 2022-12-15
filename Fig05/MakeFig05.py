@@ -71,9 +71,10 @@ def Main():
     ax[1].plot(Time,VelB1, color='blue',linewidth=LW,label='B1')
     ax[1].plot(Time,VelB2, color='black',linewidth=LW,label='B2')
     ax[1].plot(Time,VelB3, color='cyan',linewidth=LW,label='B3')
-    ax[1].set_ylabel("Ice velocity [m yr$^{-1}$]",fontsize=AxisFSize)
+    ax[1].set_ylabel("Ice velocity [m/yr]",fontsize=AxisFSize)
     ax[1].set_xlabel("Time [yrs]",fontsize=AxisFSize)
     ax[1].set_ylim([0,44000])
+    ax[1].set_xlim([0,900])
     ax[1].tick_params(axis='both',labelsize=YTickLabelSize)
     ax[1].legend(loc="upper right",prop={'size':LegendFSize})
     ax[1].text(0.07,.95, '(b)',color="black",
