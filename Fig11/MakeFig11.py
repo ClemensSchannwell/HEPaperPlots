@@ -63,7 +63,7 @@ def Main():
     ax[1][0].tick_params(axis='both',labelsize=YTickLabelSize)
     ax[1][0].set_xlim(XLim)
     ax[1][0].set_ylim(YLimDiv)
-    AddArrowsDS(ax[1][0])
+    AddArrowsDS(ax[1][0],loc="upper")
     # Subplot (1,1)
     ax[1][0].text(-0.06,0.95, "West",color="black",
         horizontalalignment='center', verticalalignment='center',
