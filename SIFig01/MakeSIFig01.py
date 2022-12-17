@@ -12,45 +12,52 @@ from UtilityFcts import *
 
 
 def Main():
-    LegendFSize=24
-    fig = plt.figure(figsize=(9.3,14))
-    ax1 = fig.add_subplot(211)
-    ax2 = fig.add_subplot(212)
-    File1="Data/SMBMax_IcePerYearWithMask.nc"
-    File2="Data/DeltaSMB_IcePerYearWithMask.nc"
-    Var = "climatic_mass_balance"
-    Extent=[0,10000,0,10000]
-    PlotDir = [[File1, "seismic_r", "linear"]]
-    PlotDir1 = [[File2, "seismic_r", "linear"]]
+    PanelLabel=["(a)","(b)"]
+    LabelPos = [0.04, 1.03]
+    fig1,ax1 = CreateSuplotAxesSimple(2,1,10,11)
+    File1="Data/DeltaTasIceMask.nc"
+    Var="tas"
+    File2="Data/DeltaPrIceMask.nc"
+    Var1="pr"
     CoastOpts=[["black","2"]]
-    CBarOpts=[["-1000","1000","$\Delta$SMB [kg m$^{-2}$ yr$^{-1}$]","12","10"]]
+    IceMaskOpts=[["gray","6","Ice extent"]]
     HudsonLines=CreateRectangleRegion("hudson")
-    KenzieLines=CreateRectangleRegion("mackenzie")
-    [_,_,im1]=Plot2DPISMField(Var,PlotDir,False,CoastOpts,False,False,False,ax1,Extent,30)
-    [_,_,im2]=Plot2DPISMField(Var,PlotDir1,False,CoastOpts,False,False,False,ax2,Extent,15)
-    im1.set_clim(-500,500)
-    im2.set_clim(-50,50)
-    cbar1 = fig.colorbar(im1, fraction=0.046, pad=0.04, ax=ax1)
-    cbar1.set_label("SMB [kg m$^{-2}$ yr$^{-1}$]", fontsize=18)
-    cbar1.ax.tick_params(labelsize=15)
-    cbar2 = fig.colorbar(im2, fraction=0.046,pad=0.04, ax=ax2)
-    cbar2.set_label("$\Delta$SMB [kg m$^{-2}$ yr$^{-1}$]", fontsize=18)
-    cbar2.ax.tick_params(labelsize=15)
-    ax1.set_xticks([])
-    PlotRectangle(HudsonLines,ax1)
-    PlotRectangle(KenzieLines,ax1)
+    MackenzieLines=CreateRectangleRegion("mackenzie")
+    Extent=[0,10000,0,10000]
+    PlotDir = [[File1, "Reds", "linear"]]
+    PlotDir1 = [[File2, "Blues", "linear"]]
+    [_,_,im1]= Plot2DPISMField(Var,PlotDir,False,CoastOpts,False,IceMaskOpts,False,ax1[0],Extent)
+    [_,_,im2]= Plot2DPISMField(Var1,PlotDir1,False,CoastOpts,False,IceMaskOpts,False,ax1[1],Extent)
+    PlotRectangle(HudsonLines,ax1[0])
+    PlotRectangle(HudsonLines,ax1[0])
+    PlotRectangle(MackenzieLines,ax1[0])
+    PlotRectangle(HudsonLines,ax1[1])
+    PlotRectangle(HudsonLines,ax1[1])
+    PlotRectangle(MackenzieLines,ax1[1])
+    im1.set_clim([0,40])
+    im2.set_clim([0,750])
+    fig1.subplots_adjust(left=0.025)
+    cbar_ax = fig1.add_axes([0.637, 0.53, 0.025, 0.35])
+    cbar=fig1.colorbar(im1, cax=cbar_ax)
+    cbar.ax.tick_params(labelsize=16)
+    cbar.set_label('$\Delta$T[K]',fontsize=18)
+    fig1.subplots_adjust(left=0.025)
+    cbar_ax1 = fig1.add_axes([0.637, 0.11, 0.025, 0.35])
+    cbar1=fig1.colorbar(im2, cax=cbar_ax1)
+    cbar1.ax.tick_params(labelsize=16)
+    cbar1.set_label('$\Delta$Precipitation[kg m$^{-2}$yr$^{-1}$]',fontsize=18)
     MakeAxesLabels([["","Distance [km]",
-        "18","16"]],ax1)
-    MakeAxesLabels([["Distance [km]","Distance [km]",
-        "18","16"]],ax2)
-    ax1.text(0.075, 0.95, '(a)',color="black",
-            horizontalalignment='center', verticalalignment='center',
-            transform=ax1.transAxes,fontsize=LegendFSize)
-    ax2.text(0.075, 0.95, '(b)',color="black",
-            horizontalalignment='center', verticalalignment='center',
-            transform=ax2.transAxes,fontsize=LegendFSize)
-    plt.tight_layout()
-    SavePlot("SIFig01","SMB_SurgeCycle")
+        "18","16"]],ax1[0])
+    ax1[0].tick_params(labelbottom=False)
+    MakeAxesLabels([["Distance","Distance [km]",
+        "18","16"]],ax1[1])
+    ax1[0].text(LabelPos[0],LabelPos[1], PanelLabel[0],color="black",
+        horizontalalignment='center', verticalalignment='center',
+        transform=ax1[0].transAxes,fontsize=16)
+    ax1[1].text(LabelPos[0],LabelPos[1], PanelLabel[1],color="black",
+        horizontalalignment='center', verticalalignment='center',
+        transform=ax1[1].transAxes,fontsize=16)
+    SavePlot("SIFig01","PMIP4_EnsembleRange",600)
 
 if __name__ == '__main__':
     Main()
