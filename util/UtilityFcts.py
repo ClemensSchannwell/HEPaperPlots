@@ -9,16 +9,28 @@ import errno
 import pickle
 # local import
 
-def AddArrowsDS(ax):
-    ax.text(0.14, 0.92, 'Hudson basin',color="blue",
-            horizontalalignment='center', verticalalignment='center',
-            transform=ax.transAxes, fontsize=16)
-    ax.text(0.14, 0.65, 'Mackenzie basin',color="blue",
-            horizontalalignment='center', verticalalignment='center',
-            transform=ax.transAxes, fontsize=16)
-    ax.annotate(s='', xy=(0.14,0.9), xytext=(0.14,0.67),
-            arrowprops=dict(arrowstyle='<|-|>',mutation_scale=30,color="blue",
-                lw=3),xycoords=ax.transAxes)
+def AddArrowsDS(ax, loc="lower"):
+    if loc == "upper":
+        ax.text(0.17, 0.92, 'Hudson basin',color="blue",
+                horizontalalignment='center', verticalalignment='center',
+                transform=ax.transAxes, fontsize=16)
+        ax.text(0.17, 0.74, 'Mackenzie basin',color="blue",
+                horizontalalignment='center', verticalalignment='center',
+                transform=ax.transAxes, fontsize=16)
+        ax.annotate(text='', xy=(0.17,0.91), xytext=(0.17,0.75),
+                arrowprops=dict(arrowstyle='<|-|>',mutation_scale=30,color="blue",
+                    lw=3),xycoords=ax.transAxes)
+
+    else:
+        ax.text(0.17, 0.22, 'Hudson basin',color="blue",
+                horizontalalignment='center', verticalalignment='center',
+                transform=ax.transAxes, fontsize=16)
+        ax.text(0.17, 0.04, 'Mackenzie basin',color="blue",
+                horizontalalignment='center', verticalalignment='center',
+                transform=ax.transAxes, fontsize=16)
+        ax.annotate(text='', xy=(0.17,0.21), xytext=(0.17,0.05),
+                arrowprops=dict(arrowstyle='<|-|>',mutation_scale=30,color="blue",
+                    lw=3),xycoords=ax.transAxes)
 
 def AddArrowsVol(ax,region):
     if region == "Hudson": 
@@ -255,19 +267,19 @@ def CreateTSInputAnomExt(VarName,Region):
     Colours=["red","purple", "black"]
     PlotFiles=[]
     if VarName == "bheatflx":
-        Anomaly=["Geo+ (+42 mW m$^{-2}$)", "Geo+ (+21 mW m$^{-2}$)","Ctrl"]
+        Anomaly=["Geo++ (+42 mW m$^{-2}$)", "Geo+ (+21 mW m$^{-2}$)","Ctrl"]
         if Region == "Hudson":
             Runs=["HE06", "HE96", "HE02"]
         elif Region == "Kenzie":
             Runs=["HE17","HE101", "HE02"]
     elif VarName == "climatic_mass_balance":
-        Anomaly=["Smb+ (+100 kg m$^{-2}$yr$^{-1}$)","Smb+ (+50 kg m$^{-2}$yr$^{-1}$)", "Ctrl"] 
+        Anomaly=["Smb++ (+100 kg m$^{-2}$yr$^{-1}$)","Smb+ (+50 kg m$^{-2}$yr$^{-1}$)", "Ctrl"] 
         if Region == "Hudson":
             Runs=["HE18", "HE94", "HE02"]
         elif Region == "Kenzie":
             Runs=["HE10", "HE99", "HE02"]
     elif VarName == "ice_surface_temp":
-        Anomaly=["St+ (+5°C)","St+ (+2.5°C)", "Ctrl"] 
+        Anomaly=["St++ (+5°C)","St+ (+2.5°C)", "Ctrl"] 
         if Region == "Hudson":
             Runs=["HE12","HE95", "HE02"]
         elif Region == "Kenzie":
@@ -292,19 +304,19 @@ def CreateTSInputAnom(VarName,Region):
     Colours=["red","black","blue"]
     PlotFiles=[]
     if VarName == "bheatflx":
-        Anomaly=["Geo+ (+42 mW m$^{-2}$)","Ctrl","Geo- (-42 mW m$^{-2}$)"]
+        Anomaly=["Geo++ (+42 mW m$^{-2}$)","Ctrl","Geo-- (-42 mW m$^{-2}$)"]
         if Region == "Hudson":
             Runs=["HE06","HE02","HE13"]
         elif Region == "Kenzie":
             Runs=["HE17","HE02","HE07"]
     elif VarName == "climatic_mass_balance":
-        Anomaly=["Smb+ (+100 kg m$^{-2}$yr$^{-1}$)", "Ctrl","Smb- (-100 kg m$^{-2}$yr$^{-1}$)"] 
+        Anomaly=["Smb++ (+100 kg m$^{-2}$yr$^{-1}$)", "Ctrl","Smb-- (-100 kg m$^{-2}$yr$^{-1}$)"] 
         if Region == "Hudson":
             Runs=["HE18","HE02","HE19"]
         elif Region == "Kenzie":
             Runs=["HE10","HE02","HE11"]
     elif VarName == "ice_surface_temp":
-        Anomaly=["St+ (+5°C)", "Ctrl","St- (-5°C)"] 
+        Anomaly=["St++ (+5°C)", "Ctrl","St-- (-5°C)"] 
         if Region == "Hudson":
             Runs=["HE12","HE02","HE20"]
         elif Region == "Kenzie":
@@ -329,7 +341,7 @@ def CreateTSInputAnom(VarName,Region):
     elif VarName == "synchron":
             Runs=["HE12","HE07"]
             Region=["Hudson","Kenzie"]
-            Anomaly=["Hudson (Smb+)","Mackenzie (Geo-)"]
+            Anomaly=["Hudson (Smb++)","Mackenzie (Geo--)"]
     elif VarName == "reference":
         Runs=["HE02"]
         if Region == "Hudson":
@@ -368,9 +380,9 @@ def CreateTSInputVolume(Region):
     PlotFiles=[]
     if Region == "Hudson":
         Runs=["HE06","HE05"]
-        Anomaly=["Geo+", "Ctrl"]
+        Anomaly=["Geo++", "Ctrl"]
     elif Region == "Kenzie":
-        Anomaly=["St+", "Ctrl"]
+        Anomaly=["St++", "Ctrl"]
         Runs=["HE22","HE02"]
     for i in range(len(Runs)):
         List=[BasePath+Runs[i]+"/Postprocessing/IceVolume"+Region+".nc",Colours[i],Anomaly[i],"4.0"]
@@ -488,14 +500,16 @@ def GetIndices4HEEvent(Events,Time):
 def GetRuns(Region,RunType="anomaly"):
     if Region == "Hudson":
         if RunType == "anomaly":
-            Runs = ["HE02","HE19","HE13","HE20","HE18","HE06","HE12"]
+            Runs = ["HE02","HE19","HE13","HE20","HE18","HE06","HE12","HE94",
+            "HE96", "HE95"]
         elif RunType == "anomalyint":
             Runs = ["HE02","HE18","HE06","HE12", "HE94", "HE96", "HE95"]
         else:
             Runs = ["HE01", "HE02","HE08", "HE14", "HE23", "HE24" ]
     else:
         if RunType == "anomaly":
-            Runs = ["HE02","HE11","HE07","HE21","HE10","HE17","HE22"]
+            Runs = ["HE02","HE11","HE07","HE21","HE10","HE17","HE22", "HE99",
+                    "HE101", "HE100"]
         else:
             Runs = ["HE01", "HE02","HE08", "HE14", "HE23", "HE24" ]
     return Runs
@@ -553,8 +567,15 @@ def MakeFigSurgeBehaviourComb(InputFile,Snapshots,Region,fig,ax3, GL=True):
         # # Second subplot
         ax2=ax3[iSlice][1].twinx()
         ax21=ax3[iSlice][1].twinx()
+        ax22=ax3[iSlice][1].twinx()
         # Set position of secondary y-axis
         ax21.spines['right'].set_position(('outward', 60))
+        ax22.spines['left'].set_position(('outward', 75))
+        ax22.spines['left'].set_color("green")
+        ax22.spines["left"].set_visible(True)
+        ax22.yaxis.set_label_position('left')
+        ax22.yaxis.set_ticks_position('left')
+
         ax3[iSlice][1].plot(Distance,np.zeros(len(Distance)), color='grey',linestyle='dotted')
         ax3[iSlice][1].plot(Distance,TempBottom[:,it], color='black',linewidth=LW)
         p1, =ax2.plot(Distance,VelBase[:,it], color='blue',linewidth=LW)
@@ -565,6 +586,7 @@ def MakeFigSurgeBehaviourComb(InputFile,Snapshots,Region,fig,ax3, GL=True):
         ax21.set_ylim([0,2.05])
         ax21.set_ylabel("Till water [m]",fontsize=YLabelSize)
         ax21.tick_params(axis='y',labelsize=YTickLabelSize)
+
 
         ax3[iSlice][1].set_xlim([0,2450])
         ax3[iSlice][1].set_ylim([-6,0.5])
@@ -577,6 +599,14 @@ def MakeFigSurgeBehaviourComb(InputFile,Snapshots,Region,fig,ax3, GL=True):
         ax3[iSlice][1].tick_params(axis='y',labelsize=YTickLabelSize)
         ax2.set_ylabel("Ice Speed [m/yr]",fontsize=YLabelSize)
         ax2.tick_params(axis='y',labelsize=YTickLabelSize)
+        p3, =ax22.plot(Distance,TauD[:,it], color='green',linewidth=LW)
+        SetColourOfSecondYAxis(ax22,p3.get_color())
+        ax22.set_ylabel("Driving stress [Pa]",fontsize=YLabelSize)
+        ax22.tick_params(axis='y',labelsize=YTickLabelSize)
+        ax22.set_ylim([10,5e4])
+        # # ax21.set_ylim([0,2.05])
+        # ax22.set_ylabel("Till water [m]",fontsize=YLabelSize)
+        # ax22.tick_params(axis='y',labelsize=YTickLabelSize)
         if iSlice == 2:
             ax3[iSlice][0].set_xlabel("Distance [km]",fontsize=YLabelSize)
             ax3[iSlice][0].tick_params(axis='x',labelsize=YTickLabelSize)
